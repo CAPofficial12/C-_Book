@@ -19,7 +19,7 @@ std::string extension_check(std::string name){
     return final;
 }
 
-bool find(auto value, std::vector<std::string> data_set){
+bool find(std::string value, std::vector<std::string> data_set){
     for (auto v: data_set){
         if (v == value){
             return true;
