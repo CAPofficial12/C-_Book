@@ -1,0 +1,50 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build active",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "${fileDirname}\\*.cpp",
+                "${fileDirname}\\*.c",
+                "-o", "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-I", "include",
+                "-I", "include",
+                "-L", "lib",
+                "-lglfw3dll",
+                "-lopengl32",
+                "-lgdi32"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "copy dll",
+            "type": "shell",
+            "command": "Copy-Item",
+            "args": [
+                "-Path", "${workspaceFolder}\\glfw3.dll",
+                "-Destination", "${fileDirname}\\glfw3.dll",
+                "-Force"
+            ],
+            "options": {
+                "shell": {
+                    "executable": "powershell.exe",
+                    "args": ["-Command"]
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build and copy",
+            "dependsOn": ["build active", "copy dll"],
+            "dependsOrder": "sequence",
+            "group": { "kind": "build", "isDefault": false },
+            "problemMatcher": []
+        }
+    ]
+}
