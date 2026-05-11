@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\rakhe\Desktop\Aarav_Thakur\Books\C-_Book\Physics Renders\CMakeFiles\CMakeFiles\0bd7b13badbe1995d1afe7d4dff4c2c8\update_mappings.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rakhe\Desktop\Aarav_Thakur\Books\Extras\glfw-3.4\glfw-3.4\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\rakhe\Desktop\Aarav_Thakur\Books\Extras\glfw-3.4\glfw-3.4\src\mappings.h.in">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="C:\Users\rakhe\Desktop\Aarav_Thakur\Books\Extras\glfw-3.4\glfw-3.4\CMake\GenerateMappings.cmake" />
+    <None Include="C:\Users\rakhe\Desktop\Aarav_Thakur\Books\C-_Book\Physics Renders\CMakeFiles\src\CMakeFiles\update_mappings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{2FB7B4FB-0DF9-3F31-A105-51C18BE8E199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{15071A02-CA71-307F-B8C8-47DEB11240FB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

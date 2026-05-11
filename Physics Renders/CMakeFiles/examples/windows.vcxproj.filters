@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\rakhe\Desktop\Aarav_Thakur\Books\Extras\glfw-3.4\glfw-3.4\examples\windows.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\rakhe\Desktop\Aarav_Thakur\Books\Extras\glfw-3.4\glfw-3.4\deps\glad\gl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\rakhe\Desktop\Aarav_Thakur\Books\Extras\glfw-3.4\glfw-3.4\examples\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C:\Users\rakhe\Desktop\Aarav_Thakur\Books\Extras\glfw-3.4\glfw-3.4\examples\glfw.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{15071A02-CA71-307F-B8C8-47DEB11240FB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E4E9B407-EFF8-3CDF-9AAE-81168CF94F1B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

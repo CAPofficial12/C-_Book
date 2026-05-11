@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\rakhe\Desktop\Aarav_Thakur\Books\C-_Book\Physics Renders\CMakeFiles\CMakeFiles\0bd7b13badbe1995d1afe7d4dff4c2c8\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{2FB7B4FB-0DF9-3F31-A105-51C18BE8E199}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
