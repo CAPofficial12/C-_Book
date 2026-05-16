@@ -1,56 +1,35 @@
 #include <iostream>
-#include <map>
-#include <algorithm>
 #include <vector>
-#include <climits>
 using namespace std;
 
-vector<int> solution(vector<int>& nums){
-    std::map<int, int> counts;
-    vector<int> refer;
-    int r = -1;
-    int y;
-    int index1;
-    int index2;
-    int ind = 1;
-    int fi;
-    
-    for (int i = 0; i < nums.size(); i++){
-        refer.push_back(i+1);
+vector<int> SOlution(vector<int>& nums){
+    int value;
+    int rep;
+
+    int len = nums.size();
+    vector<int> ref;
+    ref.resize(len);
+    for(int i = 1; i < len +1; i++){
+        ref[i-1] = i;
+    }
+    for(int i = 0;i < len;i++){
+        if (ref[nums[i]-1] == 0){
+            rep = nums[i];
+        }
+        ref[nums[i]-1] = 0;
     }
 
-    for (int x : nums) {
-        counts[x]++;
-    }
-    
-    for (auto const& [val, count] : counts) {
-        if (count > 1){
-            r = count;
-            y = val;
+    for (int i: ref){
+        if (i != 0){
+            value = i;
         }
     }
-
-    for (int i = 0; i < nums.size(); i++){
-        if(nums[i] == y){
-            if (ind == 1){
-                index1 = (unsigned)(i - (refer[i]-1));
-                ind = 2;
-            } else if(ind == 2){
-                index2 = (unsigned)(i - (refer[i]-1));
-            }
-        }
-    }
-    fi = min(index1, index2);
-    vector<int> ans = {y, fi+1};
+    vector<int> ans = {rep, value};
     return ans;
 }
 
 int main(){
-    vector<int> test = {1,1};
-    vector<int> ans = solution(test);
-    for (int i:ans){
-        cout << i << endl;
-    }
-
+    vector<int> nums = {1,2,2,4};
+    vector<int> ans = SOlution(nums);
     return 0;
 }
