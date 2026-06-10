@@ -2,27 +2,27 @@
 using namespace std;
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-    int t;
-    cin >> t;
+    int t = 1;
+    //cin >> t;
 
     while (t--) {
-        int n;
-        cin >> n;
+        int n = 3;
+        //cin >> n;
 
-        long long pref = 0;
-        long long mn = LLONG_MAX;
+        long long total = 0;
+        long long total_min = LLONG_MAX;
 
         for (int i = 1; i <= n; i++) {
-            long long x;
-            cin >> x;
+            long long height;
+            cin >> height;
 
-            pref += x;
-            mn = min(mn, pref / i);
+            total += height;
+            total_min = min(total_min, total / i);
 
-            cout << mn;
+            cout << total_min;
             if (i < n) cout << ' ';
         }
         cout << '\n';
