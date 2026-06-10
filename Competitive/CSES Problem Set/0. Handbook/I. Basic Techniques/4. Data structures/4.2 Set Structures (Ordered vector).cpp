@@ -8,7 +8,7 @@ int main(){
     s.insert(3);
     s.insert(2);
     s.insert(5);
-    cout << s.count(3) << "\n";
+    cout << s.count(3) << "\n"; //All sets are ordered
 
     s.erase(3);
     s.insert(4);
@@ -17,7 +17,7 @@ int main(){
     cout << s.size() << "\n";
 
     for (auto x : s) {
-        s.insert(5); //Multiple inserts will not change anything so count oly return if numbrt is present or not
+        s.insert(5); //Multiple inserts will not change anything so count only return if numbrt is present or not
         cout << x << " ";
     }
     cout << "\n";
