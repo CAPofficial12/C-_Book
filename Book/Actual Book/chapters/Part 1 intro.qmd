@@ -1,0 +1,14 @@
+# Foundations
+
+Before you can control a robot, you need to control the hardware.
+Part 1 builds everything from scratch — no Arduino, no HAL, no
+abstraction layers you did not write yourself.
+
+By the end of Part 1 you will have:
+
+- A working bare metal development environment
+- Direct control of GPIO, timers, and interrupts
+- Full understanding of UART, I2C, and SPI from first principles
+- A running serial dashboard streaming live data to your PC
+
+Everything in Parts 2–5 builds on what you establish here.

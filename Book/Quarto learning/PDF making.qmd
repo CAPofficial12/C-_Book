@@ -1,0 +1,17 @@
+project:
+  type: book
+
+book:
+  title: "C++ for Robotics"
+  author: "Eon"
+  chapters:
+    - index.qmd
+    - chapters/ch01.qmd
+    - chapters/ch02.qmd
+
+format:
+  html:
+    theme: cosmo    # free online version
+  typst:            # print/PDF version
+    mainfont: "Linux Libertine"
+    papersize: us-letter

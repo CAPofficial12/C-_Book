@@ -1,0 +1,61 @@
+# Why C++ for Robotics {#sec-why-cpp}
+
+## The Problem with Arduino
+
+Most robotics beginners start with Arduino. That is not a criticism —
+Arduino is an excellent tool for learning. The problem comes when you
+try to go further.
+
+When you call `digitalWrite(13, HIGH)`, Arduino writes roughly 50 lines
+of C++ on your behalf. Those lines check pin validity, handle port
+mapping, and manage timing. They are correct and safe. They are also
+slow, opaque, and impossible to optimise.
+
+## What You Actually Need
+
+A robot needs three things from its software:
+
+- **Determinism** — the control loop must execute in exactly the same
+  time every cycle
+- **Efficiency** — wasted cycles mean slower response and more heat
+- **Transparency** — you must understand what every line does
+
+Arduino gives you none of these reliably. Bare metal C++ gives you
+all three.
+
+## What This Book Covers
+
+By the end of Part 1 you will be able to...
+
+## Mini Project — Bare Metal Hello World {#sec-ch01-project}
+
+**Goal:** Blink an LED on a Teensy 4.1 using zero Arduino libraries.
+
+**Hardware needed:**
+- Teensy 4.1
+- USB cable
+- One LED + 330Ω resistor
+
+**What you will build:**
+
+```cpp
+// Direct register write — no Arduino
+#define LED_PIN 13
+volatile uint32_t *gpio = (uint32_t *)0x42000000;
+
+int main() {
+    // Set pin as output
+    *gpio |= (1 << LED_PIN);
+    
+    while(1) {
+        *gpio ^= (1 << LED_PIN);  // Toggle
+        for(volatile int i = 0; i < 100000; i++);
+    }
+}
+```
+
+**Expected output:** LED blinks at roughly 1Hz with no delay() anywhere
+in the codebase.
+
+**If it does not work:** Check that your toolchain is pointing at
+arm-none-eabi-gcc, not the system GCC.

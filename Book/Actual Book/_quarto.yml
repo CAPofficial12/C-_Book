@@ -1,0 +1,50 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "C++ for Robotics"
+  subtitle: "From vbare metal to working robot"
+  author: "Him"
+  date: today
+  cover-image: cover.png
+
+  chapters:
+    - index.qmd
+
+    - part:chapter/"Part 1 intro.qmd"
+      chapters:
+        - chapters/ch01.qmd
+        - chapters/ch02.qmd
+        - chapters/ch03.qmd
+        - chapters/ch04.qmd
+        - chapters/ch05.qmd
+        - chapters/ch06.qmd
+        - chapters/ch07.qmd
+        - chapters/"Part 1 capstone.qmd"
+
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-copy: true
+    code-overflow: wrap
+  pdf:
+    documentclass: scrbook
+    papersize: leter
+    toc: true
+    number-sections: true
+    colorlinks: true
+    geometery:
+      - top = 25mm
+      - bottom = 25mm
+      - left = 32mm
+      - right = 20mm
+    fontsize: 11pt
+    linestretch: 1.25
