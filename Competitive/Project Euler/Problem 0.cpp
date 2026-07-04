@@ -1,12 +1,13 @@
 #include <iostream>
 #include <string>
-#include <boost>
 using namespace std;
 
 int main(){
-    boost::multiprecision::total = 0;
+    unsigned long long total = 0;
     int n = 472000;
-    total = (2*n - 1) * (n) * (2*n + 1) / 3;
+    for (long long i = 1; i < n + 1; i += 2){
+        total += i * i;
+    }
     cout << total;
     return 0;
 }
