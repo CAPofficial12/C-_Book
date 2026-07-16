@@ -24,30 +24,31 @@ int main(){
 
     sort(measurements.begin(), measurements.end());
 
-    
+
     map<string, int> output;
-    for (int i = 0; i < names.size(); i++){
-        output[names[i]] = 7;
+    //Shouldn't change much but it is more techinical usage 
+    for (auto& name:names){
+        output[name] = 7;
     }
 
     vector<string> display = names;
     vector<string> old_display = names;
-    int change = 0;
+    ll change = 0; //Always use ll instead of int
+
     for (auto& measure: measurements){
-        
+
         output[get<1>(measure)] += get<2>(measure);
-        int maxa = max(max(output["Bessie"], output["Elsie"]), output["Mildred"]);
+
+        int maxa = 0;
+        for(auto&[redundant, out]:output){  //Replaced Nested Max statement with Loop
+            maxa = max(maxa, out);
+        }
+
         display = {};
-        if(output["Bessie"] == maxa){
-            display.push_back("Bessie");
-        }
-
-        if(output["Elise"] == maxa){
-            display.push_back("Elsie");
-        }
-
-        if(output["Mildred"] == maxa){
-            display.push_back("Mildred");
+        for(auto& [name, out]:output){  //Replaced Decision tree with a loop using measurements as unit
+            if (out == maxa){
+                display.push_back(name);
+            }
         }
 
         if (display != old_display){
