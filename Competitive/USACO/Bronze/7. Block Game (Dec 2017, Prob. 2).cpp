@@ -26,29 +26,18 @@ int main(){
     for(auto& b:blocks){
         string up = b[0];
         string down = b[1];
-        int length = min(up.size(), down.size());
-
-        while(up.size() > 0 && down.size() > 0){
-            if (up[0] == down [0]){
-                letters[up[0]] += 1;
-            } else{
-                letters[up[0]] += 1;
-                letters[down[0]] += 1;
-            }
-            up.erase(up.begin());
-            down.erase(down.begin());
+        map<char, int> letters_up;
+        map<char, int> letters_down;
+        for(char c: up){
+            letters_up[c] += 1;
         }
 
-        string rem;
-
-        if (up != ""){
-            rem = up;
-        }else{
-            rem = down;
+        for(char c: down){
+            letters_down[c] += 1;
         }
-        
-        for(char c:rem){
-            letters[c] += 1;
+
+        for(char c: alphabet){
+            letters[c] += max(letters_up[c], letters_down[c]);
         }
     }
 
