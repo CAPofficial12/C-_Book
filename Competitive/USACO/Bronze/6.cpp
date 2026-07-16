@@ -1,10 +1,8 @@
-#include <iostream>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 using ll = long long int;
 
-const int days = 100;
+const vector<string> names = {"Bessie", "Elsie", "Mildred"};
 
 int main(){
     ios::sync_with_stdio(0);
@@ -13,64 +11,49 @@ int main(){
     freopen("measurement.in", "r", stdin);
     freopen("measurement.out", "w", stdout);
 
-    vector<ll> Bessie(days);
-    vector<ll> Elsie(days);
-    vector<ll> Mildred(days);
+    ll test;
+    vector<tuple<ll, string, ll>> measurements;
+    cin >> test;
 
-    ll measurements;
-
-    // Inputs
-    cin >> measurements;
-    for (ll i = 0; i < measurements; i++){
-        ll day, value;
-        string Name;
-        cin >> day >> Name >> value;
-
-        if (Name == "Bessie"){
-            Bessie[day - 1] = value + 7;
-        } else if (Name == "Elsie"){
-            Elsie[day - 1] = value + 7;
-        } else{
-            Mildred[day - 1] = value + 7;
-        }
+    for(int i = 0; i < test; i++){
+        ll day, change;
+        string name;
+        cin >> day >> name >> change;
+        measurements.push_back(make_tuple(day, name, change));
     }
 
-    ll B_Change = 0;
-    ll E_Change = 0;
-    ll M_Change = 0;
+    sort(measurements.begin(), measurements.end());
+
+    
+    map<string, int> output;
+    for (int i = 0; i < names.size(); i++){
+        output[names[i]] = 7;
+    }
+
+    vector<string> display = names;
+    vector<string> old_display = names;
     int change = 0;
-    string lead, prev_lead;
-    for (int i = 0; i < days; i++){
-        B_Change += Bessie[i];
-        E_Change += Elsie[i];
-        M_Change += Mildred[i];
-
-        int high = max(max(B_Change, E_Change), M_Change);
-        lead = " ";
-        if (M_Change == high){
-            lead.append("M");
+    for (auto& measure: measurements){
+        
+        output[get<1>(measure)] += get<2>(measure);
+        int maxa = max(max(output["Bessie"], output["Elsie"]), output["Mildred"]);
+        display = {};
+        if(output["Bessie"] == maxa){
+            display.push_back("Bessie");
         }
 
-        if (E_Change == high){
-            lead.append("E");
+        if(output["Elise"] == maxa){
+            display.push_back("Elsie");
         }
 
-        if (B_Change == high){
-            lead.append("B");
+        if(output["Mildred"] == maxa){
+            display.push_back("Mildred");
         }
 
-        int spaces = 0;
-
-        for (char c: lead){
-            if (c == ' '){
-                spaces += 1;
-            }
+        if (display != old_display){
+            change += 1;
         }
-
-        if (prev_lead != lead){
-            change += spaces;
-        }
-        prev_lead = lead;
+        old_display = display;
     }
     cout << change;
     return 0;
