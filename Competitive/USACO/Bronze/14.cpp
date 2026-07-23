@@ -3,44 +3,77 @@ using namespace std;
 using ll = long long int;
 
 int main(){
-    ll n;
+    int n;
     cin >> n;
-    vector <ll> cows(n);
-    vector<ll> species(n);
-    vector<ll> ans(n+1, 0);
-    for(auto& c:cows){
+    vector<ll> cows(n);
+    vector<ll> bovine (n);
+
+    for(auto& c: cows){
         cin >> c;
     }
 
-    for(auto& s:species){
-        cin >> s;
+    for(auto& b: bovine){
+        cin >> b;
     }
 
-    ll og_op = 0;
-    for(int i = 0; i < n; i++){
-        if(cows[i] == species[i]){
-            og_op += 1;
-        }
-    }
-
+    ll OG = 0;
     for(ll i = 0; i < n; i++){
-        for(ll j = i; j < n; j++){
-            ll num = og_op;
-            for(ll a = i; a <= j; a++){
-                if( cows[j-a+i] == species[a]){
-                    num += 1; 
-                }
-                if(cows[a] == species[a]){
-                    num -= 1;
-                }
-
-            }
-            ans[num] += 1;
+        if(cows[i] == bovine[i]){
+            OG ++;
         }
     }
 
-    for (auto a: ans){
+    vector<ll> ans(n+1,0);
+    for(ll centre = 1; centre < n; centre++){
+        ll start = centre - 1;
+        ll end = centre;
+        ll total = 0;
+        while (start >= 0 && end < n){
+
+            if(cows[end] == bovine[start]){
+                total += 1;
+            }
+            if (cows[start] == bovine[end]){
+                total += 1;
+            }
+            if (cows[start] == bovine[start]){
+                total -= 1;
+            }
+            if(cows[end] == bovine[end]){
+                total -= 1;
+            }
+            start--;
+            end++;
+            ans[total + OG] ++;
+        }
+    }
+
+    for(ll centre = 0; centre < n; centre++){
+        ll start = centre;
+        ll end = centre;
+        ll total = 0;
+        while (start >= 0 && end < n){
+            if(cows[end] == bovine[start]){
+                total += 1;
+            }
+            if (cows[start] == bovine[end]){
+                total += 1;
+            }
+            if (cows[start] == bovine[start]){
+                total -= 1;
+            }
+            if(cows[end] == bovine[end]){
+                total -= 1;
+            }
+            ans[OG+total] += 1;
+
+            start --;
+            end++;
+        }
+    }
+    for(auto a: ans){
         cout << a << endl;
     }
+
     return 0;
 }
