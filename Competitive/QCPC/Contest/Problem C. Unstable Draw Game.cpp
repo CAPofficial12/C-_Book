@@ -9,7 +9,7 @@ int main(){
     for(ll i = 0; i < t; i++){
         ll n;
         cin >> n;
-        cout << "Anne";
+        cout << "Anne" << endl;
         
     }
     return 0;
