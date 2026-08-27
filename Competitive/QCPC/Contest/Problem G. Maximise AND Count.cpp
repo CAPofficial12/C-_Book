@@ -6,7 +6,7 @@ int main(){
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    set<ll> S = {};
+    multiset<ll> S = {};
     ll Q = 0;
     cin >> Q;
     for(int i = 0; i < Q; i++){
@@ -24,7 +24,7 @@ int main(){
                 maximum = max(maximum, x&a);
             }
             for(ll a:S){
-                if (maximum != x&a){
+                if (maximum == x&a){
                     count ++;
                 }
             }
