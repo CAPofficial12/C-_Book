@@ -29,6 +29,6 @@ int main(){
             }
         }
     }
-    cout << total;
+    cout << total ;
     return 0;   
 }
