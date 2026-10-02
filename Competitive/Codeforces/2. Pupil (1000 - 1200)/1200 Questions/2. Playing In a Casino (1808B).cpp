@@ -1,40 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long int;
 
-int main(){
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+int main() {
+	int test_num;
+	cin >> test_num;
+	for (int t = 0; t < test_num; t++) {
+		int n, m;
+		cin >> n >> m;
 
-    ll t;
-    cin >> t;
-    for(ll i = 0; i < t; i++){
-        
-        ll n, m;
-        cin >> n >> m;
+		vector<vector<int>> p(m, vector<int>(n));
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				// transpose to m by n to make sorting easier
+				cin >> p[j][i];
+			}
+		}
 
-        vector<vector<ll>> card(n);
-        for(auto& integer: card){
+		long long wins = 0;
+		for (int i = 0; i < m; i++) {
+			sort(p[i].begin(), p[i].end());
+			for (int j = 0; j < n; j++) {
+				// sum individual contributions per card
+				wins += 1ll * (j - (n - 1 - j)) * p[i][j];
+			}
+		}
 
-            vector<ll> numbers(m);
-            for(auto& num: numbers){
-                cin >> num;
-            }
-            integer = numbers;
-        }
-
-        ll total = 0;
-        if(n != 1){
-            for(ll a = 0; a < n-1; a++){
-                for(ll b = a+1; b < n; b++){
-                    for(ll c = 0; c < m; c++){
-                        total += abs(card[a][c] - card[b][c]);
-                    }
-                }
-
-            }
-        }
-        cout << total << endl;
-    }
-    return 0;
+		cout << wins << '\n';
+	}
 }
