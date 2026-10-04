@@ -18,7 +18,7 @@ int main(){
     vector<ll> explode = {num[i]};
     vector<ll> new_ex = {};
 
-    for(ll a =){
+    for(ll a =0; a < n; a++){
     }
     return 0;
 }
