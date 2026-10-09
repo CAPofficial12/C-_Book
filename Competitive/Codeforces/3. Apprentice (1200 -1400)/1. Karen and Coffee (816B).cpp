@@ -8,7 +8,8 @@ int main(){
 
     ll n, k, q;
     cin >> n >> k >> q;
-    map<ll, ll> freq;
+    vector<ll> diff(200002, 0);
+    vector<ll> prefix(200001, 0);
 
     ll low = LLONG_MAX;
     ll high = LLONG_MIN;
@@ -17,28 +18,25 @@ int main(){
         cin >> a >> b;
         low = min(a, low);
         high = max(b, high);
-        for(ll c = a; c <= b;c++){
-            freq[c] ++;
-        }
+        diff[a]++;
+        diff[b+1]--;
     }
 
-    vector<ll> culum(high+1);
+    ll binTotal = 0;
     ll total = 0;
-    for(auto [key, value]: freq){
-        total += value;
-        culum[key] = total;
+    for(ll i = 1; i <= 200000; i++){
+        total += diff[i];
+        prefix[i] = prefix[i-1];
+        if(total >= k){
+            prefix[i]++;
+        } 
     }
 
     for(ll i = 0; i < q; i++){
-        ll a, b, ref;
+        ll a, b;
         cin >> a >> b;
-        if(b > high){
-            ref = high;
-        }else{
-            ref = b;
-        }
-
-        cout << culum[ref] - culum[a] << endl;
+    
+        cout << prefix[b] - prefix[a-1] << endl;
     }
     return 0;
 }
