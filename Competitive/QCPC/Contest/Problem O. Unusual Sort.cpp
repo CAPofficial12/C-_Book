@@ -11,33 +11,21 @@ int main(){
     while(t--){
         ll n, x;
         cin >> n >> x;
-        vector<ll> array (n);
-        for(auto& c: array){
-            cin >> c;
+        vector<pair<ll,ll>> array (n);
+        for (ll i = 0; i< n; i++){
+            cin >> array[i].first;
+            array[i].second = i;
         }
 
-        vector<ll> ref = array;
         sort(array.begin(), array.end());
 
         bool flag = true;
         for(ll i = 0; i < n; i++){
-            if (ref[i] != array[i]){
-                if (i < x){
-                    if(array[i] != ref[i+x]){
-                        flag = true;
-                    }
-                }else if(i > n-x-1){
-                    if(array[i] != ref[i-x]){
-                        flag = true;
-                    }
-                }else if(array[i] != ref[i-x] && array[i] != ref[i+x]){
-                    flag = false;
-                }
-            }
-
-            if (!flag){
+            if (array[i].second % x != i % x){
+                flag = false;
                 break;
             }
+        
         }
 
         if (flag){
