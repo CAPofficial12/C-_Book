@@ -2,9 +2,6 @@
     "configurations": [
         {
             "name": "Win32",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
@@ -13,7 +10,10 @@
             "windowsSdkVersion": "10.0.26100.0",
             "cStandard": "c23",
             "cppStandard": "c++20",
-            "intelliSenseMode": "windows-msvc-x64"
+            "intelliSenseMode": "windows-msvc-x64",
+            "includePath": [
+                "C:\\Users\\rakhe\\Desktop\\Aarav_Thakur\\Coding\\C-_Book\\Robotics\\eigen-5.0.1\\eigen-5.0.1"
+            ]
         }
     ],
     "version": 4

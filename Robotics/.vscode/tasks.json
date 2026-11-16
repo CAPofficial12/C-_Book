@@ -7,10 +7,11 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
+                "-I",
+                "C:/Users/rakhe/Desktop/Aarav_Thakur/Coding/C-_Book/Robotics/eigen-5.0.1/eigen-5.0.1",
                 "${file}",
                 "-o",
-                "${fileDirname}\\.exe files\\${fileBasenameNoExtension}.exe",
-                "-std=c++20"
+                "${fileDirname}\\.exe files\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"
