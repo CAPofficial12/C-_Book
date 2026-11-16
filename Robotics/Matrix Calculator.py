@@ -1,111 +1,73 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
-def Allan_Variance(data):
+CSV         = "Measured File.csv"
+GYRO_IN_DEG = False     # True if the CSV gyro is in deg/s
+TAU_STAR    = 30.0      # seconds over which the filter should be able to track bias
+WN_WINDOW   = (0.05, 2.0)   # white-noise (slope -0.5) window in seconds. CHECK on the plot.
+MIN_CLUSTERS = 9        # caps tau at T/9 so every point has a usable confidence
 
-    data = np.asarray(data, dtype=float)
-    data = data[np.isfinite(data)]
-    data -= np.mean(data)
+df = pd.read_csv(CSV)
+t  = df["Time_s"].to_numpy(float)
+dt = np.median(np.diff(t))
+gyro = df[["Gyro_X", "Gyro_Y", "Gyro_Z"]].to_numpy(float)
+acc  = df[["Accel_X", "Accel_Y", "Accel_Z"]].to_numpy(float)
+if GYRO_IN_DEG:
+    gyro = np.deg2rad(gyro)
 
-    dt = np.median(np.diff(df["Time_s"]))
-    
-    N = len(data)
-    min_pairs = 100
-    max_m = N//min_pairs
-    m_values = np.unique(np.logspace(0, np.log10(max_m), 60).astype(int))
+def allan(x, dt):
+    x = x[np.isfinite(x)]
+    x = x - x.mean()
+    n = len(x)
+    max_m = n // MIN_CLUSTERS
+    ms = np.unique(np.logspace(0, np.log10(max_m), 60).astype(int))
+    c = np.concatenate(([0.0], np.cumsum(x)))
+    tau, adev = [], []
+    for m in ms:
+        avg  = (c[m:] - c[:-m]) / m
+        diff = avg[m:] - avg[:-m]
+        tau.append(m * dt)
+        adev.append(np.sqrt(0.5 * np.mean(diff**2)))
+    return np.array(tau), np.array(adev)
 
-    tau, variance = [], []
-    cumulative = np.concatenate(([0.0], np.cumsum(data)))
-    for m in m_values:
+def fixed_slope_coeff(tau, adev, lo, hi, slope):
+    """Fit only the coefficient with the slope fixed to the theoretical value."""
+    mk = (tau >= lo) & (tau <= hi) & (adev > 0)
+    if mk.sum() < 3:
+        raise ValueError("Not enough points in window")
+    return 10 ** np.mean(np.log10(adev[mk]) - slope * np.log10(tau[mk]))
 
-        average = (cumulative[m:] - cumulative[:-m]) / m
-        differences = average[m:] - average[:-m]
-        allan_variance = 0.5*np.mean(differences**2)
+def adev_at(tau, adev, t0):
+    return 10 ** np.interp(np.log10(t0), np.log10(tau), np.log10(adev))
 
-        tau.append(m*dt)
-        variance.append(allan_variance)
+names = ["X", "Y", "Z"]
+N, Qg, Qb = [], [], []
+plt.figure()
+for i, nm in enumerate(names):
+    tau, adev = allan(gyro[:, i], dt)
+    n_i = fixed_slope_coeff(tau, adev, *WN_WINDOW, -0.5)        # rad/sqrt(s)
+    a_s = adev_at(tau, adev, TAU_STAR)
+    # remove the white-noise contribution at tau*, then convert to an RRW density
+    var_rrw = max(a_s**2 - n_i**2 / TAU_STAR, 1e-12)
+    qb_i = 3.0 * var_rrw / TAU_STAR                              # (rad/s)^2 / s
+    N.append(n_i); Qg.append(n_i**2); Qb.append(qb_i)
+    plt.loglog(tau, adev, label=f"Gyro {nm}")
+    plt.loglog(tau, n_i / np.sqrt(tau), "k:", lw=0.8)
+    plt.plot(TAU_STAR, a_s, "ko")
 
-    return tau, np.sqrt(variance)
+plt.axvspan(*WN_WINDOW, alpha=0.1)
+plt.xlabel("tau (s)"); plt.ylabel("Allan deviation (rad/s)")
+plt.grid(True, which="both"); plt.legend(); plt.show()
 
-def Allan_Parameters(tau, adev, tau_min, tau_max, expected_slope):
-    tau = np.asarray(tau)
-    adev = np.asarray(adev)
+# R: isotropic accelerometer noise in units of g, from the normalised accel
+g_ref = np.mean(np.linalg.norm(acc, axis=1))
+a_g   = acc / g_ref
+r0    = np.mean(np.var(a_g, axis=0, ddof=1))
 
-    mask = (
-        (tau >= tau_min) &
-        (tau <= tau_max) &
-        (adev > 0)
-    )
-
-    if mask.sum() < 3:
-        raise ValueError("Not enough points in fitting range")
-
-    x = np.log10(tau[mask])
-    y = np.log10(adev[mask])
-
-    slope, intercept = np.polyfit(x, y, 1)
-    coefficient = 10**intercept
-
-    print(f"Fitted slope: {slope:.3f}")
-
-    if abs(slope - expected_slope) > 0.15:
-        print("WARNING: Fitted slope is not close to the expected slope.")
-
-    return coefficient
-
-df = pd.read_csv("Measured File.csv")
-
-Accel = df[["Accel_X", "Accel_Y", "Accel_Z"]].to_numpy(dtype=float)
-Gyro = df[["Gyro_X", "Gyro_Y", "Gyro_Z"]].to_numpy(dtype=float)
-
-for i, axis in enumerate(["Gyro_X", "Gyro_Y", "Gyro_Z"]):
-
-    data = Gyro[:, i]
-
-    median = np.median(data)
-    mad = np.median(np.abs(data - median))
-
-    threshold = 6 * 1.4826 * mad
-
-    outliers = np.abs(data - median) > threshold
-
-    print(
-        axis,
-        "Outliers:", np.sum(outliers),
-        "Total samples:", len(data)
-    )
-
-Means = [df["Accel_X"].mean(), df["Accel_Y"].mean(), df["Accel_Z"].mean()]
-Variance = [df["Accel_X"].var(), df["Accel_Y"].var(), df["Accel_Z"].var()]
-
-mag = np.linalg.norm(Accel, axis=1)
-valid = mag > 1e-12
-Accel_normalized = Accel[valid] / mag[valid, None]
-
-R = np.cov(
-    Accel_normalized,
-    rowvar=False,
-    ddof=1
-)
-
-print("\nAccelerometer covariance R:")
-print(R)
-
-#Allan Deviation
-tauX, varianceX = Allan_Variance(Gyro[:, 0])
-tauY, varianceY = Allan_Variance(Gyro[:, 1])
-tauZ, varianceZ = Allan_Variance(Gyro[:, 2])
-
-N_X = Allan_Parameters(tauX, varianceX, 0.5, 1, -0.5)
-N_Y = Allan_Parameters(tauY, varianceY, 0.5, 1, -0.5)
-N_Z = Allan_Parameters(tauZ, varianceZ, 0.5, 10, -0.5)
-
-K_X = np.sqrt(3) * Allan_Parameters(tauX, varianceX, 130, 900, 0.5)
-K_Y = np.sqrt(3) * Allan_Parameters(tauY, varianceY, 70, 200, 0.5)
-K_Z = np.sqrt(3) * Allan_Parameters(tauZ, varianceZ, 100, 200, 0.5)
-
-print("\nContinuous process noise covariance Qc:")
-Qc = [N_X**2, N_Y**2, N_Z**2, K_X**2, K_Y**2, K_Z**2]
-print(np.array(Qc))
-
+print("\n--- paste into the C++ ---")
+print("const d QG[3] = {%.6e, %.6e, %.6e};" % tuple(Qg))
+print("const d QB[3] = {%.6e, %.6e, %.6e};" % tuple(Qb))
+print("const d R0    = %.6e;" % r0)
+print("\nN (rad/sqrt(s)):", N)
+print("g_ref (CSV accel units):", g_ref)
